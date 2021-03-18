@@ -1,0 +1,39 @@
+:root {
+  --transitio: all .3s ease-in-out
+;
+}
+
+.dt-image {
+  width: 60px;
+  box-shadow: -5px 10px 10px rgba(0, 0, 0, 0.7);
+  margin: 10px;
+  cursor: pointer;
+  transition: var(--transitio);
+}
+
+.dt-image:hover {
+  transform: scale(1.01);
+}
+
+.dt-select, .dt-input {
+  max-width: 120px !important;
+  margin: auto !important;
+}
+
+.dt-select .v-input__slot, .dt-input .v-input__slot {
+  margin-top: 20px !important;
+}
+
+th {
+  text-transform: uppercase;
+  color: #fff !important;
+  font-size: 18px;
+}
+
+.block {
+  display: block;
+}
+
+.w-full {
+  width: 100%;
+}
