@@ -27,6 +27,7 @@
         <v-icon
           small
           @click="deleteItem(item.id)"
+          v-if="!$route.query.view"
         >
           mdi-delete
         </v-icon>
@@ -83,7 +84,6 @@ import { mapGetters } from 'vuex'
         this.$store.commit('global/setDeleteItem' , {id , table : 'inventory_product'} )
       },
       deleted(){
-        console.log('asd')
         this.getData()
       },
       editQty(id , qty) {

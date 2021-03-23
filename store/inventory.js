@@ -19,6 +19,7 @@ const state = {
         { text: 'branch name', value: 'branch_name' , align: "center" },
         { text: 'created at', value: 'created_at' , align: "center" },
         { text: 'updated at', value: 'updated_at' , align: "center" },
+        { text: 'closed at', value: 'closed_at' , align: "center" },
         { text: 'Actions', value: 'actions' , align : "center" },
       ],
     data : [],

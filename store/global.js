@@ -44,12 +44,15 @@ const getters = {
 };
 
 const actions = {
-  getBranches({commit}){
+  getBranches({commit} , payload){
     commit("setBranchesLoading", true);
     return new Promise((resolve, reject) => {
         Http.get(`branches`)
         .then(res => {
           commit("setBranchesLoading", false)
+          if(payload){
+            res.data = []
+          }
           commit("setBranches", res.data)
           resolve(res.data)
         })

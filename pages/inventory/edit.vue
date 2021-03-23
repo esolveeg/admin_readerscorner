@@ -1,7 +1,7 @@
 
 <template>
     <v-row>
-      <v-col class="text-center"  cols="12" lg="6">
+      <v-col class="text-center" v-if="!$route.query.view"  cols="12" lg="6">
         <v-card class="pa-4">
           <v-form
               ref="form"
@@ -43,7 +43,7 @@
           </v-form>
         </v-card>
       </v-col>
-      <v-col class="text-center d-none d-lg-block" cols="6">
+      <v-col class="text-center d-none d-lg-block" cols="6" v-if="!$route.query.view">
         <v-card class="pa-4">
             <v-simple-table>
               <template v-slot:default>
@@ -74,7 +74,7 @@
       <v-col class="text-center" cols="12">
         <datatables-inventory-items/>
       </v-col>
-       <v-col class="text-center" cols="12" v-if="$auth.user.role.name == 'admin'">
+       <v-col class="text-center" cols="12" v-if="$auth.user.role.name == 'admin' && !$route.query.view">
         <v-btn class="block success w-full" @click.prevent="closeModal = true">
           Save
         </v-btn>

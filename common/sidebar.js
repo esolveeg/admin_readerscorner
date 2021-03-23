@@ -18,5 +18,10 @@ export default[
     icon: 'mdi-chart-bubble',
     title: 'Inventory',
     to: '/inventory'
+  },
+  {
+    icon: 'mdi-chart-bubble',
+    title: 'Documents',
+    to: '/Documents'
   }
 ]

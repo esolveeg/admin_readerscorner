@@ -22,6 +22,7 @@
             vertical
           ></v-divider>
           <v-spacer></v-spacer>
+          <v-btn @click.prevent="$router.push({name : 'documents-edit' , query : {doc : 2}})">new order</v-btn>
           <!-- <modals-products-create/> -->
         </v-toolbar>
       </div>
