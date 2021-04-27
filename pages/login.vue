@@ -33,7 +33,7 @@
                      </v-card-text>
                      <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="primary" :loading="loading"  @click.prevent="login">Login</v-btn>
+                        <v-btn color="primary" class="d-block w-full" :loading="loading"  @click.prevent="login">Login</v-btn>
                      </v-card-actions>
                   </v-card>
                </v-flex>

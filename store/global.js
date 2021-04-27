@@ -7,6 +7,10 @@ const state = {
     deleteItem:{},
     branches: [],
     languages: [],
+    categories: [],
+    ages: [],
+    authorLoading: false,
+    authors : [],
     deleteAcion:{},
     productLoading: false,
     categoryLoading: false,
@@ -41,6 +45,18 @@ const getters = {
   branchesLoading(state) {
     return state.branchesLoading;
   },
+  ages(state) {
+    return state.ages;
+  },
+  categories(state) {
+    return state.categories;
+  },
+  authorLoading(state) {
+    return state.authorLoading;
+  },
+  authors(state) {
+    return state.authors;
+  },
 };
 
 const actions = {
@@ -68,10 +84,26 @@ const actions = {
         Http.get(`ages`)
         .then(res => {
           commit("setAgeLoading", false)
+          commit("setAges", res.data)
           resolve(res.data)
         })
         .catch((res) => {
           commit("setAgeLoading", false)
+          reject(res);
+        });
+    });
+  },
+  getAuthors({commit}){
+    commit("setAuthorLoading", true);
+    return new Promise((resolve, reject) => {
+        Http.get(`authors`)
+        .then(res => {
+          commit("setAuthorLoading", false)
+          commit("setAuthors", res.data)
+          resolve(res.data)
+        })
+        .catch((res) => {
+          commit("setAuthorLoading", false)
           reject(res);
         });
     });
@@ -94,9 +126,11 @@ const actions = {
   getCategories({commit}){
     commit("setCategoryLoading", true);
     return new Promise((resolve, reject) => {
-        Http.get(`categories`)
+        Http.get(`categories/tree`)
         .then(res => {
           commit("setCategoryLoading", false)
+          commit("setCategories", res.data)
+
           // commit("setLanguages", res.data)
           resolve(res.data)
         })
@@ -147,6 +181,18 @@ const actions = {
 const mutations = {
   setErr(state, error) {
     state.errors = error;
+  },
+  setAges(state, payload) {
+    state.ages = payload;
+  },
+  setAuthorLoading(state, payload) {
+    state.authorLoading = payload;
+  },
+  setAuthors(state, payload) {
+    state.authors = payload;
+  },
+  setCategories(state, payload) {
+    state.categories = payload;
   },
   setCategoryLoading(state, payload) {
     state.categoryLoading = payload;

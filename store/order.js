@@ -1,5 +1,6 @@
 // import axios from "axios";
 
+import {serializeQuery} from "@/common/Helpers.js";
 import Http from "@/common/Http.js";
 // import i18n from "@/i18n.js";
 const state = {
@@ -37,11 +38,10 @@ const actions = {
     commit("setLoading", true);
     // commit(mutations.setLoading, true);
     return new Promise((resolve, reject) => {
-        Http.get("orders", payload)
+        Http.get(`orders?${serializeQuery(payload)}`)
         .then((res) => {
           commit("setItems", []);
           const data = res.data.items.map((item) => {
-            console.log(item)
             let discount = item.discount_value 
             return {
               id: item.id,

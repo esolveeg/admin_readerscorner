@@ -5,6 +5,7 @@ import {serializeQuery} from "@/common/Helpers.js";
 // import i18n from "@/i18n.js";
 const state = {
   errors: null,
+  createError: [],
   datatable: {
     search: '',
     calories: '',
@@ -25,12 +26,18 @@ const getters = {
   datatable(state) {
     return state.datatable;
   },
+  createError(state) {
+    return state.createError;
+  },
+  createLoading(state) {
+    return state.createLoading;
+  },
 };
 
 const actions = {
   get({commit}, payload) {
-    commit("setLoading", true);
-    // commit(mutations.setLoading, true);
+    commit("loading", true);
+    // commit(mutations.loading, true);
     return new Promise((resolve, reject) => {
         Http.get(`products?${serializeQuery(payload)}`)
         .then((res) => {
@@ -44,26 +51,48 @@ const actions = {
               thumbnail,
             };
           });
-          console.log(data)
           commit("setItems", data);
           commit("setTotal", res.data.total);
-          commit("setLoading", false);
+          commit("loading", false);
 
           resolve(data);
         })
         .catch((res) => {
-          commit("setLoading", false);
+          commit("loading", false);
           reject(res);
         });
     });
   },
+  create({commit} , payload) {
+    commit("createLoading", true);
+    // commit(mutations.loading, true);
+    return new Promise((resolve, reject) => {
+        Http.post(`products`, payload)
+        .then((res) => {
+          commit("createLoading", false);
+
+          resolve(datres.data);
+        })
+        .catch((err) => {
+          commit("createLoading", false);
+          commit("createError" , err.response.data.errors)
+          reject(err.response.data);
+        });
+    });
+  }
 };
 
 const mutations = {
   setErr(state, error) {
     state.errors = error;
   },
-  setLoading(state, payload) {
+  createError(state, error){
+    state.createError = error;
+  },
+  createLoading(state, payload){
+    state.createLoading = payload;
+  },
+  loading(state, payload) {
     state.datatable.loading = payload;
   },
   setItems(state, payload) {

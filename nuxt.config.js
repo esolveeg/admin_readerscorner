@@ -22,8 +22,13 @@ export default {
     middleware: ['auth']
   },
 
+  server :{
+    host : "192.168.1.102"
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    '~/assets/variables.css',
     '~/assets/scss/global.css'
   ],
 

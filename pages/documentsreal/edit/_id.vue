@@ -34,7 +34,7 @@
               </v-col>
             </v-row>
               <v-btn
-                color="success"
+                color="success block w-full d-block"
                 class="mr-4"
                 @click="addItem"
               >
@@ -94,16 +94,14 @@
     </v-row>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import editDocument from "@/mixins/editDocument.js"
 export default {
-  mounted(){
-    console.log(this.$route.name)
-  },
   data(){
     return {
-      valid:false,
-      productErr:'',  
-      closeModal:false,
+      form: {
+        product : '',
+        qty : 1,
+      },
       rules :{
         product: [
           v => !!v || 'product is required',
@@ -114,53 +112,8 @@ export default {
           
         ],
       },
-      form: {
-        product : '',
-        qty : 1,
-      },
-      item :null,
     }
   },
-  computed: {
-      ...mapGetters({
-        productLoading: 'global/productLoading',
-        closeLoading: 'inventory/closeLoading'
-      }),
-    },
-  methods:{
-    addItem(){
-      this.form.doc = this.$route.query.doc
-      this.$route.query.branch ? this.form.branch = this.$route.query.branch :''
-      this.$store.dispatch('inventory/insertItem' , this.form)
-      .then(() => {
-        this.$refs.form.resetValidation()
-        this.form = {
-          product : '',
-          qty : 1,
-        },
-        this.$refs.product.focus()
-      })
-    },
-    closeDocument(){
-      this.$store.dispatch('inventory/close' , this.$route.query.doc)
-      .then(() => {
-        this.$router.push({name: 'inventory'})
-      })
-    },
-    findProduct(){
-      this.$store.dispatch('global/getProduct' , this.form.product)
-      .then(res => {
-        this.productErr = ""
-        this.item = res
-        this.$refs.qty.focus()
-      })
-      .catch(() => {
-        this.productErr = "this product not found"
-      })
-    },
-    reset () {
-      this.$refs.form.reset()
-    },
-  },
+  mixins :[editDocument],
 }
 </script>

@@ -1,12 +1,10 @@
-// import axios from "axios";
 
-import Http from "@/common/Http.js";
-// import i18n from "@/i18n.js";
 const state = {
   errors: null,
   deleteModal: false,
   createModal: false,
   loading: false,
+  authorModal: false,
   snackbar : {
     active: false,
     text: '',
@@ -17,6 +15,9 @@ const getters = {
     deleteModal(state) {
         return state.deleteModal;
     },
+    authorModal(state) {
+      return state.authorModal;
+  },
     snackbar(state){
       return state.snackbar
     },
@@ -34,6 +35,9 @@ const actions = {
 const mutations = {
   setLoading(state, payload) {
     state.loading = payload;
+  },
+  authorModal(state, payload) {
+    state.authorModal = payload;
   },
   setDeleteModal(state, payload) {
     state.deleteModal = payload;

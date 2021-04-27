@@ -6,7 +6,7 @@
     :options.sync="options"
     :server-items-length="datatable.total"
     :loading="datatable.loading"
-    sort-by="calories"
+    sort-by="created_at"
     class="elevation-1"
   >
     <template v-slot:top>
@@ -22,6 +22,15 @@
             vertical
           ></v-divider>
           <v-spacer></v-spacer>
+          <v-btn
+                  color="primary"
+                  dark
+                  class="mb-2"
+                  :loading="createLoading"
+                  @click.prevent="create"
+                >
+                  New Item
+              </v-btn>
           <!-- <modals-products-create/> -->
         </v-toolbar>
       </div>
@@ -30,6 +39,8 @@
           <v-col cols="3">
             <v-select
                 :items="languages"
+                v-model="form.language"
+                clearable
                 item-text="title"
                 item-value="id"
                 label="language"
@@ -40,7 +51,8 @@
                 :items="categories"
                 item-text="title"
                 item-value="slug"
-                multiple
+                v-model="form.category"
+                clearable
                 chips
                 attach
                 label="categories"
@@ -51,28 +63,37 @@
                 :items="ages"
                 item-text="title"
                 item-value="slug"
-                multiple
+                v-model="form.age"
+                clearable
                 chips
                 attach
                 label="ages"
             ></v-select>
           </v-col>
           <v-col cols="3">
-            <v-switch
-            v-model="payload.image"
-            inset
-            label="Image"
-            ></v-switch>
+            <v-select
+                :items="imageFilter"
+                v-model="form.image"
+                clearable
+                item-text="title"
+                item-value="id"
+                label="has image"
+            ></v-select>
           </v-col>
          
-          <v-col cols="12">
+          <v-col cols="8">
             <v-text-field
-              v-model="datatable.search"
+              v-model="form.search"
               append-icon="mdi-magnify"
               label="Search"
               single-line
               hide-details
             ></v-text-field>
+          </v-col>
+          <v-col cols="4">
+            <v-btn color="primary" class="capitalize w-full" @click.prevent="saveFilters()">
+              remember my choices
+            </v-btn>
           </v-col>
         </v-row>
 
@@ -107,44 +128,47 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import filter from "@/mixins/filter.js"
+import crudActions from "@/mixins/crudActions.js"
   export default {
+    mixins : [filter , crudActions],
     data: () => ({
       dialog: false,
       title : "prodcuts",
       options: {},
-      languages:[{title : "none" , id : null}],
-      categories:[],
-      ages:[],
-      payload:{
-        show : 10,
-        page: 1,
+      docType : 6,
+      docOptions:{action: 'document/create' ,route: 'products-documents-edit-id'},
+      imageFilter : [
+        {title : 'no image' , value : 0},
+        {title : 'with image' , value : 1},
+      ],
+      filters : [
+        'global/getLanguages',
+        'global/getCategories',
+        'global/getAges',
+      ],
+      form: {
+        language : null,
+        image : null,
+        page : null,
+        show : null,
+        age : null,
+        category : null,
+        subcategory : null, 
+        search : null,
       },
-      filters:{
-        language: null,
-        image:null,
-        category:null,
-        subcategory:null,
-      }
     }),
-    watch: {
-      options: {
-        handler () {
-          this.payload.show = this.options.itemsPerPage
-          this.payload.page = this.options.page
-          this.getProducts()
-        },
-        deep: true,
-      },
-    },
     computed: {
       ...mapGetters({
         datatable: 'product/datatable',
-        // languages: 'global/languages',
+        ages: 'global/ages',
+        categories: 'global/categories',
+        languages: 'global/languages',
       }),
     },
     methods: {
-      getProducts() {
-        this.$store.dispatch('product/get' , this.payload)
+      getData(form) {
+        this.$store.dispatch('product/get' , form)
       },
       editItem (item) {
         console.log(item)
@@ -158,20 +182,6 @@ import { mapGetters } from 'vuex'
        console.log('cinfirmed')
       },
     },
-    created(){
-      this.$store.dispatch('global/getLanguages')
-      .then(res => {
-        this.languages = [...this.languages, ...res]
-      })
-      this.$store.dispatch('global/getCategories')
-      .then(res => {
-        this.categories = [...this.categories, ...res]
-      })
-      this.$store.dispatch('global/getAges')
-      .then(res => {
-        this.ages = [...this.ages, ...res]
-      })
-    }
   }
 </script>
 

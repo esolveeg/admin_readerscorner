@@ -31,6 +31,7 @@
           <v-col cols="3">
               <v-select
                   :items="status"
+                  v-model="form.status"
                   label="status"
               ></v-select>
             </v-col>
@@ -38,13 +39,15 @@
               <v-select
                   :items="gateways"
                   label="gateway"
+                  v-model="form.gateway"
               ></v-select>
             </v-col>
             <v-col cols="3">
-              <v-switch
-              inset
-              label="Closed"
-              ></v-switch>
+              <v-select
+                  :items="types"
+                  v-model="form.closed"
+                  label="gateway"
+              ></v-select>
             </v-col>
         </v-row>
 
@@ -55,7 +58,7 @@
       <span v-if="!editStatus.includes(item.id)" @dblclick="editStatus.push(item.id)" class="pointer">{{item.status}}</span>
       <v-select
           v-else
-          :items="['pending' , 'shipping' , 'shipped']"
+          :items="status"
           :loading="statusLoading"
           @change="updateStatus($event , item.id)"
           :value="item.status"
@@ -88,30 +91,23 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import filter from '@/mixins/filter.js'
 import { removeFromArrayByVal } from '@/common/Helpers.js'
   export default {
+    mixins : [filter],
     data: () => ({
       title : "orders",
       editStatus: [],
       status:['pending' , 'shipping' , 'shipped'],
       gateways:['cod' , 'card'],
       options: {},
-      payload:{
-        show : 10,
-        page: 1,
+      types : [{text : 'cart' , value : 0 },{text : 'orders' , value : 1 } ],
+      form:{
+        gateway : null,
+        status : null,
+        closed : null,
       },
     }),
-
-    watch: {
-      options: {
-        handler () {
-          this.payload.show = this.options.itemsPerPage
-          this.payload.page = this.options.page
-          this.getData()
-        },
-        deep: true,
-      },
-    },
     computed: {
       ...mapGetters({
         datatable: 'order/datatable',
@@ -119,8 +115,10 @@ import { removeFromArrayByVal } from '@/common/Helpers.js'
       }),
     },
     methods: {
-      getData() {
-        this.$store.dispatch('order/get' , this.payload)
+      getData(form) {
+        console.log(form)
+        
+        this.$store.dispatch('order/get' , form)
       },
       updateStatus(status , id){
         const payload = {
