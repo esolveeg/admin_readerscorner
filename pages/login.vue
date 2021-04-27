@@ -7,12 +7,12 @@
                         <v-toolbar-title>Login form</v-toolbar-title>
                      </v-toolbar>
                      <v-card-text>
-                        <div v-if="err && typeof err == 'string'">
-                            <span class="text-danger">{{errors}}</span>
+                        <div class="danger" v-if="error">
+                            <span >{{error}}</span>
                         </div>
-                        <div v-if="err && typeof err == 'array'">
-                            <span v-for="(err , index) in err" :key="index">{{err}}</span>
-                        </div>
+                        <!-- <div v-if="errors && typeof errors == 'array'">
+                            <span v-for="(error , index) in errors" :key="index">{{error}}</span>
+                        </div> -->
                         <v-form v-model="valid" ref="loginForm">
                            <v-text-field
                               prepend-icon="mdi-account-arrow-right"
@@ -20,6 +20,8 @@
                               v-model="form.email"
                               label="Email"
                               type="email"
+                              :error="errors.hasOwnProperty('email')"
+                              :error-messages="errors.email"
                            ></v-text-field>
                            <v-text-field
                               id="password"
@@ -28,6 +30,8 @@
                               v-model="form.password"
                               label="Password"
                               type="password"
+                              :error="errors.hasOwnProperty('password')"
+                              :error-messages="errors.password"
                            ></v-text-field>
                         </v-form>
                      </v-card-text>
@@ -68,7 +72,8 @@ export default {
     computed: {
       ...mapGetters({
         loading: 'myAuth/loading',
-        err: 'myAuth/err'
+        errors: 'myAuth/errors',
+        error: 'myAuth/error'
       }),
     },
     methods:{
@@ -80,7 +85,6 @@ export default {
             .then(() => {
                console.log('asd')
             })
-
           }
       }
     }

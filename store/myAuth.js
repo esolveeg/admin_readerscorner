@@ -1,15 +1,19 @@
 import http from "../common/Http.js";
 export const state = () => ({
     loading: false,
-    err : null
+    errors : [],
+    error : "",
 });
 
 export const getters = {
     loading(state){
         return state.loading
     },
-    err(state){
-        return state.err
+    errors(state){
+        return state.errors
+    },
+    error(state){
+        return state.error
     },
 };
 
@@ -18,8 +22,11 @@ export const mutations = {
     setLoading(state , payload){
         state.loading = payload
     },
-    setErr(state , payload){
-        state.err = payload
+    errors(state , payload){
+        state.errors = payload
+    },
+    error(state , payload){
+        state.error = payload
     },
 
 };
@@ -27,7 +34,7 @@ export const mutations = {
 export const actions = {
     login({commit},payload) {
         commit('setLoading' , true)
-        commit('setErr' , null)
+        commit('setErr' , [])
         payload.auth.loginWith('local', { data: payload.form })
         .then(d => {
             commit('setLoading' , false)
@@ -38,7 +45,10 @@ export const actions = {
             commit('ui/setSnackbar' , snackbar , { root: true })
         })
         .catch(e => {
-            commit('setErr' , e.response.data)
+            console.log(e.response.data.errors)
+            typeof e.response.data.errors !== 'undefined'
+            ? commit('errors' , e.response.data.errors)
+            : commit('error' , e.response.data)
             commit('setLoading' , false)
         })
     },

@@ -23,13 +23,14 @@ export default {
   },
 
   server :{
-    host : "192.168.1.102"
+    host : "192.168.1.40"
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '~/assets/variables.css',
-    '~/assets/scss/global.css'
+    '~/assets/scss/global.css',
+    '~/assets/scss/utilities.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
