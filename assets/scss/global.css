@@ -37,3 +37,7 @@ th {
 .w-full {
   width: 100%;
 }
+
+.theme--dark.v-btn.v-btn--disabled {
+  width: 100% !important;
+}

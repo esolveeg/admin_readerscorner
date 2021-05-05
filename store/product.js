@@ -20,6 +20,18 @@ const state = {
     data : [],
     loading: false,
   },
+  itemDatatable: {
+    search: '',
+    total:null,
+    headers : [
+        { text: 'isbn', value: 'isbn' , align: "center" },
+        { text: 'title', value: 'title' , align: "center" },
+        { text: 'price', value: 'price' , align: "center" },
+        { text: 'actions', value: 'actions' , align: "center"},
+    ],
+    data : [],
+    loading: false,
+  },
 };
 
 const getters = {
@@ -31,6 +43,15 @@ const getters = {
   },
   createLoading(state) {
     return state.createLoading;
+  },
+  datatableData(state) {
+    return state.datatable.data;
+  },
+  datatableHeaders(state) {
+    return state.datatable.headers;
+  },
+  datatableTotal(state) {
+    return state.datatable.total;
   },
 };
 
@@ -70,12 +91,16 @@ const actions = {
         Http.post(`products`, payload)
         .then((res) => {
           commit("createLoading", false);
-
-          resolve(datres.data);
+          const snackbar = {
+            active : true,
+            text: 'product created successfully'
+          }
+          commit('ui/setSnackbar' , snackbar , { root: true })
+          resolve(res.data);
         })
         .catch((err) => {
           commit("createLoading", false);
-          commit("createError" , err.response.data.errors)
+          typeof err.response.data.errors !== 'undefined' ? commit("createError" , err.response.data.errors) : ''
           reject(err.response.data);
         });
     });

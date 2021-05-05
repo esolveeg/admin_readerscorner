@@ -4,7 +4,7 @@ import Http  from "@/common/Http.js";
 import {serializeQuery} from "@/common/Helpers.js";
 // import i18n from "@/i18n.js";
 const state = {
-  errors: null,
+  createError: [],
   datatable: {
     search: '',
     calories: '',
@@ -26,8 +26,11 @@ const getters = {
   datatable(state) {
     return state.datatable;
   },
+  createError(state) {
+    return state.createError;
+  },
   createLoading(state) {
-    return state.datatable;
+    return state.createLoading;
   },
 };
 
@@ -41,9 +44,11 @@ const actions = {
           commit("createLoading", false);
           resolve(res.data);
         })
-        .catch((res) => {
-          commit("setCreateLoading", false);
-          reject(res);
+        .catch((err) => {
+          commit("createLoading", false);
+          console.log(err.response.data)
+          commit("createError" , err.response.data)
+          reject(err);
         });
     });
   }
@@ -52,6 +57,9 @@ const actions = {
 const mutations = {
   createLoading(state, payload) {
     state.createLoading = payload;
+  },
+  createError(state, payload) {
+    state.createError = payload;
   },
 };
 

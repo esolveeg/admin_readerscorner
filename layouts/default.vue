@@ -79,7 +79,7 @@ export default {
   name :"defaultCView",
   data () {
     return {
-      drawer:false,
+      drawer:true,
       items,
       title: 'SUM'
     }

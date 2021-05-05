@@ -6,26 +6,26 @@
                 <v-form ref="form" v-model="valid">
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="form.name" :rules="rules.name" label="name"/>
+                            <v-text-field :error="errors.hasOwnProperty('title')" :error-messages="errors.name" v-model="form.name" :rules="rules.name" label="name"/>
                         </v-col>
                         <v-col cols="12">
-                            <v-text-field v-model="form.author_slug" :rules="rules.slug" label="slug"/>
+                            <v-text-field :error="errors.hasOwnProperty('author_slug')" :error-messages="errors.author_slug" v-model="form.author_slug" :rules="rules.slug" label="slug"/>
                         </v-col>
                         <v-col cols="12">
-                            <v-switch v-model="form.top" lable="top"/>
+                            <v-switch label="top" v-model="form.top" lable="top"/>
                         </v-col>
                     </v-row>
                 </v-form>
             </v-card-text>
             <v-card-actions>
-                <v-btn :loading="loading" class="d-block w-full" color="primary" @click.prevent="create()">create</v-btn>
+                <v-btn :disabled="!valid" :loading="loading" class="d-block w-full" color="primary" @click.prevent="create()">create</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
 <script>
 import { mapGetters } from 'vuex'
-var slugify = require('slugify')
+import {slugify} from '@/common/Helpers.js'
 
   export default {
       data(){
@@ -59,7 +59,8 @@ var slugify = require('slugify')
       },
     computed: {
         ...mapGetters({
-            loading : 'authors/createLoading'
+            loading : 'author/createLoading',
+            errors :  'author/createError'
         }),
         active:
         {
@@ -85,6 +86,9 @@ var slugify = require('slugify')
                 .then(res => {
                     this.$store.commit('ui/authorModal' , false)
                     this.$emit('created' , res)
+                })
+                .catch(() =>{
+                    this.valid = true
                 })
 
             }

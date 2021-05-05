@@ -159,7 +159,7 @@ const actions = {
     commit("setInsertLoading", true);
     // commit(mutations.setLoading, true);
     return new Promise((resolve, reject) => {
-        Http.post("inventories/add", payload)
+        Http.post("documents/insert", payload)
         .then(res => {
           dispatch("findItems" , { doc : payload.doc , show: 10,page: 1,})
           commit("setInsertLoading", false);
