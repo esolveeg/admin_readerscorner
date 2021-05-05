@@ -65,7 +65,6 @@
                 item-value="slug"
                 v-model="form.age"
                 clearable
-                chips
                 attach
                 label="ages"
             ></v-select>
@@ -76,7 +75,7 @@
                 v-model="form.image"
                 clearable
                 item-text="title"
-                item-value="id"
+                item-value="value"
                 label="has image"
             ></v-select>
           </v-col>
@@ -136,7 +135,7 @@ import crudActions from "@/mixins/crudActions.js"
       dialog: false,
       title : "prodcuts",
       options: {},
-      docType : 6,
+      docType : 5,
       docOptions:{action: 'document/create' ,route: 'products-documents-edit-id'},
       imageFilter : [
         {title : 'no image' , value : 0},

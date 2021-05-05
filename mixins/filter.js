@@ -42,7 +42,7 @@ export default {
     },
 
     created(){
-      console.log(this.$route.query)
+      //get all saved filters
       const saved = JSON.parse(localStorage.getItem('products-filter'))
       //check if thers is any vuex actions to grap for filters
       if(typeof this.filters !== 'undefined'){
