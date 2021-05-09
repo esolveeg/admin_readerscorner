@@ -6,55 +6,36 @@ export default {
         valid : false,
         metaHidden : false,
         errors : [],
-        form : {
-        },
+        form : {}
       }
     },
     watch:{
-       metaHidden: {
-            handler () {
-              localStorage.setItem(`${this.$route.name}-meta-hidden` , this.metaHidden)
-            },
-            deep: true,
-          },
+      metaHidden: {
+        handler () {
+          localStorage.setItem(`${this.$route.name}-meta-hidden` , this.metaHidden)
+        },
+        deep: true,
+      },
     },
     methods :{
       async submit(){
-        console.log('asdas')
-        this.opts.loading = true
-        await this.$refs.form.validate()
-        this.$emit('submitted' , this.form)
-        if(this.valid){   
-          // this.opts.loading = false
-
-        }
+        this.opts.action(this)
+        
       },
-      // saveCategories(){
-      //   localStorage.setItem(`${this.$route.name}-categories` , JSON.stringify(this.productForm.categories))
-      // },
-      // async createProduct(){
-      //   await this.$refs.productForm.validate()
-      //     if(this.valid){   
-      //       this.$store.dispatch('product/create' , this.productForm)
-      //       .then(res => {
-      //         this.$refs.productForm.reset()
-      //         this.form.product = res.id
-      //         this.$emit('created')
-      //         console.log('asasdas')
-      //       })
-      //       .catch(() => {
-      //         this.valid = true
-      //       })
-      //     }
-      // },
-      // authorCreated(res){
-      //   this.productForm.author_id = res.id
-      // },
-      // createAuthor(){
-      //   this.$store.commit('ui/authorModal' , true)
-      // }
+      enter(input){
+        input.enter(this)
+
+      }
     },
     created(){
+      //set form to the document type from  param
+      if(this.$route.params.type){
+        this.form.type = this.$route.params.type
+      }
+      //set form to the document from  param
+      if(this.$route.params.doc){
+        this.form.doc = this.$route.params.doc
+      }
       //set the meta hidden value which responsible for hiding the unecessary fields on the product 
       // to its previous value selected on this browser
       let metaHidden = localStorage.getItem(this.metaLocalStorageKey)
@@ -63,17 +44,28 @@ export default {
         metaHidden = metaHidden === 'true'
         this.metaHidden = metaHidden
       }
+      // check if param id is set to get the form data
+      if(this.$route.params.id || this.$route.params.doc){
+        const id = this.$route.params.id ? this.$route.params.id : this.$route.params.doc
+        http.get(`${this.opts.editUrl}/${id}`)
+            .then(res => {
+              this.form = res.data
+            })
+      }
 
       //loop over inputs to get selects items 
       this.opts.inputs.forEach(input => {
-        if(input.type == 'select' && input.items.length == 0){
-          input.loading = true
-          http.get(input.url)
-              .then(res => {
-                input.loading = false
-                input.items = res.data
-              })
+        if(input.type == 'select' || input.type == 'combobox'){
+          if( input.items.length == 0){
+            input.loading = true
+            http.get(input.url)
+                .then(res => {
+                  input.loading = false
+                  input.items = res.data
+                })
+          }
         }
       })
+
     },
   }

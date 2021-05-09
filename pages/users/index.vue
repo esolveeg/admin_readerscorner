@@ -2,12 +2,7 @@
 <template>
   <v-row>
     <v-col class="text-center">
-      <builders-data-table :opts="opts">
-       
-      <template v-slot:modals>
-         <modals-global-create-doc/>
-        </template>
-      </builders-data-table>
+      <builders-data-table :opts="opts"/>
     </v-col>
   </v-row>
 </template>
@@ -17,11 +12,12 @@ import DatatableBuilder from "@/builders/datatable.js"
 import DatatableDirector from "@/builders/datatableDirector.js"
 export default {
   data(){
-    const opts = new DatatableDirector(DatatableBuilder()).makeDocuments()
+    const opts = new DatatableDirector(new DatatableBuilder()).makeUsers()
+    // // const opts = new DatatableDirector(DatatableBuilder()).makeDocuments()
    
     return {
       opts
     }
-  }
+  },
 }
 </script>

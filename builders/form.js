@@ -1,28 +1,47 @@
 // src/builders/ListingBuilder.js
-
-export default class DatatableBuilder {
+export default class FormBuilder {
     constructor(){
-        this.datatable = {}
+        this.form = {}
     }
     setTitle(title){
-        this.datatable.title = title
+        this.form.title = title
         return this
     }
-    setHeaders(headers){
-        this.datatable.headers = headers
+    setCols(cols){
+        this.form.cols = cols
         return this
     }
-    setFilters(filters){
-        this.datatable.filters = filters
+    setLoadnng(loading){
+        this.form.loading = loading
+        return this
+    }
+    setEditUrl(editUrl){
+        this.form.editUrl = editUrl
         return this
     }
     
-    setUrl(url){
-        this.datatable.url = url
+    setHiddenable(hiddenable){
+        this.form.hiddenable = hiddenable
+        return this
+    }
+    setInputs(inputs){
+        this.form.inputs = inputs
+        return this
+    }
+    setAction(action){
+        this.form.action = action
+        return this
+    }
+    setErrors(errors){
+        this.form.errors = errors
+        return this
+    }
+    setError(error){
+        this.form.error = error
         return this
     }
     
     build() {
-        return this.datatable
+        return this.form
     }
 };

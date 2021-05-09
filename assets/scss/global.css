@@ -5,17 +5,14 @@
 
 .dt-image {
   width: 60px;
-  -webkit-box-shadow: -5px 10px 10px rgba(0, 0, 0, 0.7);
-          box-shadow: -5px 10px 10px rgba(0, 0, 0, 0.7);
+  box-shadow: -5px 10px 10px rgba(0, 0, 0, 0.7);
   margin: 10px;
   cursor: pointer;
-  -webkit-transition: var(--transitio);
   transition: var(--transitio);
 }
 
 .dt-image:hover {
-  -webkit-transform: scale(1.01);
-          transform: scale(1.01);
+  transform: scale(1.01);
 }
 
 .dt-select, .dt-input {
@@ -40,4 +37,15 @@ th {
 .w-full {
   width: 100%;
 }
-/*# sourceMappingURL=global.css.map */
+
+.theme--dark.v-btn.v-btn--disabled {
+  width: 100% !important;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}

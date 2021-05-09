@@ -6,6 +6,8 @@ import {serializeQuery} from "@/common/Helpers.js";
 const state = {
   errors: null,
   createError: [],
+  product: {},
+  findLoading : false,
   datatable: {
     search: '',
     calories: '',
@@ -37,6 +39,12 @@ const state = {
 const getters = {
   datatable(state) {
     return state.datatable;
+  },
+  product(state){
+    return state.product
+  },
+  findLoading(state){
+    return state.findLoading
   },
   createError(state) {
     return state.createError;
@@ -104,12 +112,35 @@ const actions = {
           reject(err.response.data);
         });
     });
+  },
+  find({commit} , payload){
+    commit("findLoading", true);
+    // commit(mutations.loading, true);
+    return new Promise((resolve, reject) => {
+        Http.get(`products/find/id/${payload}`)
+        .then((res) => {
+          commit('product' , res.data)
+         
+          
+          resolve(res.data);
+        })
+        .catch((res) => {
+          commit("findLoading", false);
+          reject(res);
+        });
+    });  
   }
 };
 
 const mutations = {
   setErr(state, error) {
     state.errors = error;
+  },
+  product(state, payload){
+    state.product = payload;
+  },
+  findLoading(state, payload){
+    state.findLoading = payload;
   },
   createError(state, error){
     state.createError = error;

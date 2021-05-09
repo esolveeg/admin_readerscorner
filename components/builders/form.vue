@@ -9,19 +9,24 @@
     <v-card-text>   
       <v-form
         ref="form"
-        v-model="valid"
+        v-model="opts.valid"
         lazy-validation
       >
         <v-row>
+            <div class="danger w-full mt-4" v-if="opts.error">
+                <span >{{opts.error}}</span>
+            </div>
             <v-col v-for="(input,index) in opts.inputs" :key="index" class="text-center mb-8" :cols="input.cols">
                     <div class="text" v-if="input.type=='text'">
                         <v-text-field
-                        :error="errors.hasOwnProperty(input.prop)"
-                        :error-messages="errors[input.prop]"
+                        :error="opts.errors.hasOwnProperty(input.prop)"
+                        :error-messages="opts.errors[input.prop]"
                         v-model="form[input.prop]"
-                        :rules="input.rules"
+                        :type="input.inputType"
+                        :rules="typeof input.rules == 'undefined' ?[] : input.rules"
                         :ref="input.ref"
-                        @keyup.enter="input.enter"
+                        :hint="input.hint"
+                        @keyup.enter="enter(input)"
                         :label="input.label"
                         ></v-text-field>
                     </div>
@@ -29,9 +34,9 @@
                         <v-select
                             :items="input.items"
                             v-model="form[input.prop]"
-                            :rules="input.rules"
-                            :error="errors.hasOwnProperty(input.prop)"
-                            :error-messages="errors[input.prop]"
+                            :rules="typeof input.rules == 'undefined' ?[] : input.rules"
+                            :error="opts.errors.hasOwnProperty(input.prop)"
+                            :error-messages="opts.errors[input.prop]"
                             :clearable="input.clearable"
                             :loading="input.loading"
                             :item-text="input.inputText"
@@ -43,9 +48,9 @@
                         <v-textarea
                             :label="input.label"
                             v-model="form[input.prop]"
-                            :rules="input.rules"
-                            :error="errors.hasOwnProperty(input.prop)"
-                            :error-messages="errors[input.prop]"
+                            :rules="typeof input.rules == 'undefined' ?[] : input.rules"
+                            :error="opts.errors.hasOwnProperty(input.prop)"
+                            :error-messages="opts.errors[input.prop]"
                             auto-grow
                             :rows="input.rows"
                         ></v-textarea>
@@ -55,10 +60,10 @@
                         <v-combobox
                             :items="input.items"
                             v-model="form[input.prop]"
-                            :rules="input.rules"
-                            :error="errors.hasOwnProperty(input.prop)"
+                            :rules="typeof input.rules == 'undefined' ?[] : input.rules"
+                            :error="opts.errors.hasOwnProperty(input.prop)"
                             :loading="input.loading"
-                            :error-messages="errors[input.prop]"
+                            :error-messages="opts.errors[input.prop]"
                             :clearable="input.clearable"
                             :item-text="input.inputText"
                             :item-value="input.inputValue"
@@ -89,7 +94,7 @@
                 <v-btn
                     color="success"
                     class="mr-4  w-full block mt-8"
-                    :disabled="!valid"
+                    :disabled="!opts.valid && opts.errors.length == 0"
                     :loading="opts.loading"
                     @click.prevent="submit"
                     >
@@ -98,8 +103,8 @@
             </v-col>
         </v-row>
       </v-form>   
-      </v-card-text>
-    </v-card> 
+    </v-card-text>
+ </v-card> 
 </template>
 
 

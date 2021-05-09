@@ -1,103 +1,167 @@
 import {
-    languageFilter,
-    pageFilter,
-    categoryFilter,
-    ageFilter,
-    branchFilter,
-    closedFilter,
-    typeFilter,
-    roleFilter,
-    imageFilter,
-} from "@/common/Filters.js"
+    title,
+    name,
+    slug,
+    password,
+    email,
+    discount_percent,
+    isbn,
+    description,
+    price,
+    thumbnail,
+    qty,
+    author,
+    language,
+    branch,
+    branch_to,
+    customer,
+    supplier,
+    document,
+    website
+} from '@/common/Inputs.js'
+import {editAddProduct ,editAddDocItem, login , editAddDoc , editAddBranch , craeteReturnDoc} from '@/common/FormActions.js'
 export default class DatatableDirector {
     constructor(builder){
         this.builder = builder
     }
     
-    makeProducts() {
-        const  filters  =  [
-            languageFilter(),
-            pageFilter(),
-            categoryFilter(),
-            ageFilter(),
-            imageFilter()
-        ]
-        const  headers  =  [
-            { text: 'isbn', value: 'isbn' , align: "center" },
-            { text: 'title', value: 'title' , align: "center" },
-            { text: 'price', value: 'price' , align: "center" },
-            { text: 'thumbnail', value: 'thumbnail' , align: "center" },
-            { text: 'actions', value: 'actions' , align: "center"},
+   
+    makeEditAddProduct() {
+        const  inputs  =  [
+            title,
+            slug,
+            isbn,
+            description,
+            price,
+            thumbnail,
+            author,
+            language,
+            website
         ]
         return this.builder
-                .setTitle('products')
-                .setUrl('products')
-                .setHeaders(headers)
-                .setFilters(filters)
-                .build()
+            .setTitle('Create product')
+            .setInputs(inputs)
+            .setEditUrl('products/find/id')
+            .setCols(12)
+            .setErrors([])
+            .setError('')
+            .setLoadnng(false)
+            .setHiddenable(true)
+            .setAction(editAddProduct)
+            .build()
     }
-    makeDocuments() {
-        const  filters  =  [
-            branchFilter(),
-            closedFilter(),
-            typeFilter(),
-        ]
-        const  headers  =  [
-            { text: 'id', value: 'id' , align: "center" },
-            { text: 'created by', value: 'created_by' , align: "center" },
-            { text: 'created at', value: 'created_at' , align: "center" },
-            { text: 'branch', value: 'branch_name' , align: "center" },
-            { text: 'closed at', value: 'closed_at' , align: "center" },
-            { text: 'actions', value: 'actions' , align: "center"},
+    makeEditAddDocItem() {
+        const  inputs  =  [
+            isbn,
+            qty
         ]
         return this.builder
-                .setTitle('documents')
-                .setUrl('documents')
-                .setHeaders(headers)
-                .setFilters(filters)
-                .build()
-    }
-    makeDocumentItems() {
-        const  filters  =  []
-        
-        const  headers  =  [
-            { text: 'id', value: 'id' , align: "center" },
-            { text: 'isbn', value: 'isbn' , align: "center"},
-            { text: 'title', value: 'title' , align: "center" },
-            { text: 'price', value: 'price' , align: "center" },
-            { text: 'quantity', value: 'qty' , align: "center"},
-            { text: 'real quantity', value: 'real_qty' , align: "center" },
-            { text: 'actions', value: 'actions' , align: "center" },
-        ]
-        return this.builder
-                .setTitle('document items')
-                .setUrl('documents/items')
-                .setHeaders(headers)
-                .setFilters(filters)
-                .build()
-    }
-            
-    makeUsers() {
-        const  filters  =  [
-            branchFilter(),
-            roleFilter(),
-        ]
-        
-        const  headers  =  [
-            { text: 'id', value: 'id' , align: "center" },
-            { text: 'name', value: 'name' , align: "center" },
-            { text: 'email', value: 'email' , align: "center"},
-            { text: 'phone', value: 'phone' , align: "center"},
-            { text: 'branch', value: 'branch' , align: "center" },
-            { text: 'role', value: 'role' , align: "center" },
-            { text: 'created at', value: 'created_at' , align: "center" },
-        ]
-        return this.builder
-                .setTitle('users')
-                .setUrl('user/list')
-                .setHeaders(headers)
-                .setFilters(filters)
-                .build()
+            .setTitle('Insert product')
+            .setInputs(inputs)
+            .setEditUrl('documents/item/1')
+            .setCols(8)
+            .setErrors([])
+            .setError('')
+            .setLoadnng(false)
+            .setHiddenable(true)
+            .setAction(editAddDocItem)
+            .build()
     }
 
+    makeEditAddBranch() {
+        const  inputs  =  [
+            name,
+        ]
+        return this.builder
+            .setTitle('Fill Branch Data')
+            .setInputs(inputs)
+            .setEditUrl('branches/find')
+            .setCols(12)
+            .setErrors([])
+            .setError('')
+            .setLoadnng(false)
+            .setHiddenable(true)
+            .setAction(editAddBranch)
+            .build()
+    }
+    makeLogin() {
+        const  inputs  =  [
+            email,
+            password,
+        ]
+        return this.builder
+            .setTitle('Login')
+            .setInputs(inputs)
+            .setCols(6)
+            .setError('')
+            .setErrors([])
+            .setLoadnng(false)
+            .setHiddenable(true)
+            .setAction(login)
+            .build()
+    }
+    makeConfigueDoc(type){
+
+    }
+    //[(-)[0 : sell , 1 : buy return  ] , (+)[2 : buy , 3 : sell return ], (=)[4 : inventory , 5 : define , 6 : first balance] , (+ , -)[7 : transactions]]
+    makeEditAddDoc(ctx) {
+        let inputs = []
+        const type = ctx.$route.params.type
+        // set branch input on needed
+        //sell , buy , inventory , first balance , transactions
+        //execlude sell return , buy return , define
+        //validate that user dosn't have branch
+        if((type !== 1 || type !== 3 || type !== 5) && ctx.$auth.user.branch_id == null){
+            if(!ctx.$route.params.doc){
+                inputs.push(branch)
+            }
+        }
+        //sell
+        if(type == 0){
+            inputs.push(customer)
+            inputs.push(discount_percent)
+            // inputs.push(discount_value)
+        } 
+        //buy return or sell return
+        if(type == 1 || type == 3){
+            inputs.push(document)
+        }
+        //buy
+        if(type == 2){
+            inputs.push(supplier)
+            inputs.push(discount_percent)
+        }
+        //transactions
+        if(type == 7){
+            inputs.push(branch_to)
+        }
+        
+        //check if doc param is set to change title to configure instead of create
+        const title = ctx.$route.params.doc ? 'configure document' : 'create document'
+        return this.builder
+            .setTitle(title)
+            .setInputs(inputs)
+            .setCols(12)
+            .setError('')
+            .setErrors([])
+            .setEditUrl('documents/find')
+            .setLoadnng(false)
+            .setHiddenable(false)
+            .setAction(editAddDoc)
+            .build()
+    }
+
+    makeReturnDoc() {
+        let inputs = [document]
+        const title = 'create return document'
+        return this.builder
+            .setTitle(title)
+            .setInputs(inputs)
+            .setCols(12)
+            .setError('')
+            .setErrors([])
+            .setLoadnng(false)
+            .setAction(craeteReturnDoc)
+            .build()
+    }
 };

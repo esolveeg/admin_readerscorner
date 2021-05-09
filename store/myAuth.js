@@ -34,23 +34,22 @@ export const mutations = {
 export const actions = {
     login({commit},payload) {
         commit('setLoading' , true)
-        commit('setErr' , [])
-        payload.auth.loginWith('local', { data: payload.form })
-        .then(d => {
-            commit('setLoading' , false)
-            const snackbar = {
-                active : true,
-                text: 'logged in successfully'
-            }
-            commit('ui/setSnackbar' , snackbar , { root: true })
-        })
-        .catch(e => {
-            console.log(e.response.data.errors)
-            typeof e.response.data.errors !== 'undefined'
-            ? commit('errors' , e.response.data.errors)
-            : commit('error' , e.response.data)
-            commit('setLoading' , false)
-        })
+        return new Promise((resolve, reject) => {
+            payload.auth.loginWith('local', { data: payload.form })
+            .then(d => {
+                commit('setLoading' , false)
+                const snackbar = {
+                    active : true,
+                    text: 'logged in successfully'
+                }
+                resolve(d.data)
+                commit('ui/setSnackbar' , snackbar , { root: true })
+            })
+            .catch(err => {
+                reject(err.response.data)
+            })
+        });
+        
     },
     me({commit} , payload){
         commit('setLoading' , true)

@@ -3,7 +3,9 @@ const state = {
   errors: null,
   deleteModal: false,
   createModal: false,
+  closeModal:false,
   loading: false,
+  createDocModal : false,
   authorModal: false,
   snackbar : {
     active: false,
@@ -15,6 +17,13 @@ const getters = {
     deleteModal(state) {
         return state.deleteModal;
     },
+    createDocModal(state) {
+        return state.createDocModal;
+    },
+  
+    closeModal(state) {
+      return state.closeModal;
+  },
     authorModal(state) {
       return state.authorModal;
   },
@@ -36,8 +45,15 @@ const mutations = {
   setLoading(state, payload) {
     state.loading = payload;
   },
+  createDocModal(state, payload) {
+    state.createDocModal = payload;
+  },
+  
   authorModal(state, payload) {
     state.authorModal = payload;
+  },
+  closeModal(state, payload) {
+    state.closeModal = payload;
   },
   setDeleteModal(state, payload) {
     state.deleteModal = payload;

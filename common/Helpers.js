@@ -37,6 +37,23 @@ export const removeFromArrayByVal = (item , array) => {
 
     return array
 }
+const trs = [
+  'sell',
+  'outcoming order return',
+  'outcoming order',
+  'sell return',
+  'inventory',
+  'define products',
+  'first balance',
+  'transactions',
+]
+// [0 : sell , 1 : buy return  ] , (+)[2 : buy , 3 : sell return ], (=)[4 : inventory , 5 : define , 6 : first balance] , (+ , -)[7 : transactions]]
+export const getTrTitle = (type) => {
+  return trs[type]
+}
+export const getTrType = (title) => {
+  return trs.indexOf(title)
+}
 
 export const slugify = title => {
     return title

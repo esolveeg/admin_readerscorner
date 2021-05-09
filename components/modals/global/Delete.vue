@@ -37,7 +37,8 @@ import { mapGetters } from 'vuex'
             this.$store.dispatch('global/remove' , 'inventory/get')
             .then(() => {
                 this.$store.commit('ui/setDeleteModal' , false)
-                this.$emit.deleted
+                this.$store.dispatch('document/findDoc' , this.$route.params.doc)
+                this.$emit('deleted')
             })
         }
     }

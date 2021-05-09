@@ -167,7 +167,12 @@ const actions = {
         .then((res)=> {
           ctx.commit("setLoading", false)
           ctx.commit("ui/setDeleteModal", false , {root:true})
-          ctx.dispatch(`${ctx.state.deleteAcion.action}` , ctx.state.deleteAcion.payload , {root:true})
+          // ctx.dispatch(`${ctx.state.deleteAcion.action}` , ctx.state.deleteAcion.payload , {root:true})
+          const snackbar = {
+            active : true,
+            text: 'item deleted successfully'
+          }
+          ctx.commit('ui/setSnackbar' , snackbar , { root: true })
           resolve(res.data)
         })
         .catch((e) => {

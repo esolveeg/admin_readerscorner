@@ -1,7 +1,7 @@
 import axios from "axios";
 const api = axios.create ({
     baseURL: `${process.env.API_URL}`,
-    headers: { 'Accept': 'application/json'}
+    headers: { 'Accept': 'application/json' , 'X-Requested-With':'XMLHttpRequest'}
 })
 
 api.interceptors.request.use(

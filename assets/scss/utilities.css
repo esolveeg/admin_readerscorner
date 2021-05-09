@@ -1,7 +1,10 @@
 .danger {
-  background-color: var(--danger);
+  background-color: var(--danger) !important;
   color: #fff;
   padding: 10px 20px;
   margin-bottom: 10px;
+}
+.mb-0{
+  margin-bottom: 0 !important;
 }
 /*# sourceMappingURL=utilities.css.map */

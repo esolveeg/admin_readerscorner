@@ -19,6 +19,35 @@ export const pageFilter = () =>{
 
     }
 }
+
+export const fromFilter = () =>{
+    return {
+        type : 'date',
+        prop : 'from',
+        clearable : true,
+        value : new Date().toISOString().substr(0, 10),
+        menue : false,
+        ref:"from",
+        label : 'from'
+
+    }
+}
+const today = new Date()
+const tomorrow = new Date(today)
+tomorrow.setDate(tomorrow.getDate() + 1)
+
+export const toFilter = () =>{
+    return {
+        type : 'date',
+        prop : 'to',
+        clearable : true,
+        value : tomorrow,
+        menue : false,
+        ref:"to",
+        label : 'to'
+
+    }
+}
 export const categoryFilter = () =>{
     return {
         type : 'select',

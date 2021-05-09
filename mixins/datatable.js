@@ -19,9 +19,14 @@ export default {
             .then(res => {
                 this.datatable = res.data
                 this.loading = false
-                console.log(res.data.items[0])
                 // console.log(res.data[0].keys)
             })
+        },
+        deleted(){
+            console.log('deel')
+        },
+        create(){
+            this.opts.create(this)
         },
         isNumber(evt) {
             evt = (evt) ? evt : window.event;
@@ -43,7 +48,8 @@ export default {
             });
         },
         saveFilters(){
-            localStorage.setItem(`${this.$route.name}-filter` , JSON.stringify(clearNullValues(this.form)))
+            let type = this.opts.docType ? `${this.opts.docType}` : '-'
+            localStorage.setItem(`${this.$route.name}${type}-filter` , JSON.stringify(clearNullValues(this.form)))
             const snackbar = {
                 active : true,
                 text: 'Your filters has been saved successfully'
@@ -54,16 +60,29 @@ export default {
             this.getData(this.form)
             addParamsToLocation(this.form , this.$route.path)
         },
+        deleteItem(item) {
+            this.$store.commit('ui/setDeleteModal' , true)
+            this.$store.commit('global/setDeleteItem' , {id:item.id , table : this.opts.table} )
+            // this.$store.commit('global/setDeleteAction' , {action:'inventory/get' , payload : this.filters})
+        },
+        editItem(item) {
+            this.opts.edit(this , item)
+        },
+        viewItem(item) {
+            this.opts.view(this , item)
+        }
+        
     },
     watch: {
         options: {
             handler () {
-                this.form.show = this.options.itemsPerPage
-                this.form.page = this.options.page
-                const doc = this.$route.params.doc
-                this.form.doc = doc
-
-
+                // this.form.show = this.options.itemsPerPage
+                // this.form.page = this.options.page
+                
+                Object.keys(this.$route.params).forEach(key => {
+                    this.form[key] = this.$route.params[key]
+                })
+                this.filter()
             },
             deep: true,
         },
@@ -75,15 +94,25 @@ export default {
         },
     },
     created(){
+        //set opt.doctype to the document type from do param
+        if(this.$route.params.type){
+            this.opts.docType = this.$route.params.type
+        }
+        this.$bus.$on('productCreated',() => {
+            console.log('asdasdasdasd')
+            this.getData()
+        })
         //get the page query
         let query = this.$route.query
         //check if there is no query which means that user just opened the page
         //by other word its not manual refresh to the page
         if(JSON.stringify(query) === '{}'){
+            let type = this.opts.docType ? `${this.opts.docType}` : '-'
             //check if there is filters saved on localstorage
-            if(localStorage.getItem(`${this.$route.name}-filter`)){
+            if(localStorage.getItem(`${this.$route.name}${type}-filter`)){
                 //get all saved filters
-                const saved = JSON.parse(localStorage.getItem(`${this.$route.name}-filter`))
+                const saved = JSON.parse(localStorage.getItem(`${this.$route.name}${type}-filter`))
+                // console.log(saved)
                 this.form = saved
             }
         } else {
