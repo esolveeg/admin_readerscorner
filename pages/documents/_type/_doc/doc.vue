@@ -1,6 +1,9 @@
 
 <template>
     <v-row>
+      <div id="invoice" >
+        <invoices-invoice v-show="printing"/>
+      </div>
       <v-col cols="12" v-if="closeErr">
         <div class="danger">
           {{closeErr}}
@@ -47,10 +50,8 @@
         </v-btn>
         <modals-global-close-doc/>
       </v-col>
-      <div id="invoice" v-if="printing" ref="invoice">
-        <invoices-reciept/>
-      </div>
-      <v-btn @click="ptint()">print</v-btn>
+      
+      <v-btn @click="print()">print</v-btn>
     </v-row>
 </template>
 <script>
@@ -101,6 +102,7 @@ export default {
     print(){
       this.printing = true
       // Get HTML to print from element
+      
       const prtHtml = document.getElementById('invoice').innerHTML;
 
       // Get all stylesheets HTML
@@ -110,7 +112,7 @@ export default {
       }
 
       // Open the print window
-      const WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+      const WinPrint = window.open('', '', 'left=0,top=0,width:794px; height:1122px,toolbar=0,scrollbars=0,status=0');
 
       WinPrint.document.write(`<!DOCTYPE html>
       <html>
@@ -126,6 +128,7 @@ export default {
       WinPrint.focus();
       WinPrint.print();
       WinPrint.close();
+      this.printing = false
     },
     findProduct(){
       this.$store.dispatch('global/getProduct' , this.form.product)

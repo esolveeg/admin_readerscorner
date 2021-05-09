@@ -251,7 +251,7 @@ const actions = {
     console.log('payload')
     console.log(payload)
     return new Promise((resolve, reject) => {
-        Http.get(`/documents/find/items/${payload}`)
+        Http.get(`/documents/find/${payload}`)
         .then(res => {
           console.log('payload')
     console.log(payload)

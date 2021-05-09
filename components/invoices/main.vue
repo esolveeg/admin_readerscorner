@@ -85,33 +85,8 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex"
-  export default {
-    computed: {
-      ...mapGetters({
-        doc: 'document/docWithItems',
-        loading: 'document/docLoading',
-        
-      }), 
-      total() {
-      return this.items.reduce(
-        (acc, item) => acc + item.price * item.quantity,
-        0
-      );
-    }
-    },
-     data(){
-         return {
-            items: [
-                { description: "Website design", quantity: 1, price: 300 },
-                { description: "Website design", quantity: 1, price: 75 },
-                { description: "Website design", quantity: 1, price: 10 }
-            ]           
-         }
-     } ,
-  created(){
-    this.$store.dispatch('document/findDocWithItems' , this.$route.params.doc)
-  }
+export default {
+  props:['doc']
 }
 </script>
 <style>
