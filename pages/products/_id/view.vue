@@ -48,7 +48,7 @@
                 <v-list-item-subtitle
                   class="text--primary"
                 >
-                  <v-img :src="product[item.prop]"/>
+                  <v-img class="w-200" :src="product[item.prop]"/>
                 </v-list-item-subtitle>
               </v-list-item-content>
             </template>
