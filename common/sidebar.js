@@ -8,7 +8,7 @@ export default[
   {
     icon: 'mdi-book-open-blank-variant',
     title: 'products',
-    to: '/products/'
+    to: '/products/?type=5'
   },
   {
     icon: 'mdi-account-outline',

@@ -12,11 +12,11 @@ const docAction = (ctx , payload) => {
 export const createDoc = (ctx) => {
     console.log('asdd')
     const payload = {type : ctx.$route.params.type}
-    //check if document type is define products to execlude branch
+    //check if document type is define products to execlude branch & set type
     if(ctx.$route.params.type == 5){
-        console.log('asdd')
         docAction(ctx , payload)
     } else {
+        //check if the route has products word to show modal
         //check if user has branch
         if(ctx.$auth.user.branch_id){
             payload.branch = ctx.$auth.user.branch_id

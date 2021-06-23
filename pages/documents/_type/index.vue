@@ -17,7 +17,7 @@
           </v-btn>
           </template> 
       <template v-slot:modals>
-         <modals-global-create-doc/>
+         <modals-global-create-doc :type="5"/>
          <v-dialog
           v-model="active"
           max-width="500px"

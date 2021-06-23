@@ -197,6 +197,7 @@ export const editAddDoc = async (ctx) => {
         return
 
     }
+    
     ctx.$store.dispatch('document/create' , ctx.form)
     .then(res => {
         clearErr(ctx)
