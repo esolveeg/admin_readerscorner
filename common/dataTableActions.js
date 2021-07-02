@@ -9,14 +9,13 @@ const docAction = (ctx , payload) => {
         ctx.$router.push({name : 'documents-type-doc-doc' , params : {type : ctx.$route.params.type, doc : item.id}})
     })
 }
+
+export const createProduct = ctx => {
+    ctx.$router.push({name : 'products-create'})
+
+}
 export const createDoc = (ctx) => {
-    console.log('asdd')
     const payload = {type : ctx.$route.params.type}
-    //check if document type is define products to execlude branch & set type
-    if(ctx.$route.params.type == 5){
-        docAction(ctx , payload)
-    } else {
-        //check if the route has products word to show modal
         //check if user has branch
         if(ctx.$auth.user.branch_id){
             payload.branch = ctx.$auth.user.branch_id
@@ -25,7 +24,6 @@ export const createDoc = (ctx) => {
             //show select branch modal when no branch on user
             ctx.$store.commit("ui/createDocModal" , true)
         }   
-    }    
 }
 
 export const createBranch = ctx => {

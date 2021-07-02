@@ -83,18 +83,6 @@ export const editAddProduct = async (ctx) => {
                 
                 ctx.opts.loading = false
                 ctx.$refs.form.reset()
-                const payload = {
-                    "product" : res.isbn,
-                    "doc" : ctx.$route.params.doc
-                }
-                ctx.$store.dispatch('document/insertItem' , payload)
-                .then(()=>{
-                    clearErr(ctx)
-                    
-                ctx.
-                    ctx.$bus.$emit('productCreated', payload )
-                })
-                console.log('created' , res)
             })
             .catch(err => {
                 setErr(err ,ctx)

@@ -8,7 +8,7 @@ export default[
   {
     icon: 'mdi-book-open-blank-variant',
     title: 'products',
-    to: '/products/?type=5'
+    to: '/products'
   },
   {
     icon: 'mdi-account-outline',
@@ -38,12 +38,12 @@ export default[
   {
     icon: 'mdi-bus-double-decker',
     title: 'transactions',
-    to: '/documents/7'
+    to: '/documents/6'
   },
   {
     icon: 'mdi-file-document-edit-outline',
     title: 'first balance docuents',
-    to: '/documents/6'
+    to: '/documents/5'
   },
   
   

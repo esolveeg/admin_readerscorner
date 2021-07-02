@@ -23,7 +23,7 @@
                         :error-messages="opts.errors[input.prop]"
                         v-model="form[input.prop]"
                         :type="input.inputType"
-                        :rules="typeof input.rules == 'undefined' ?[] : input.rules"
+                        :rules="typeof input.rules == 'undefined'  ? '' : input.rules"
                         :ref="input.ref"
                         :hint="input.hint"
                         @keyup.enter="enter(input)"

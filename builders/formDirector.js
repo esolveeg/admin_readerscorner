@@ -132,7 +132,7 @@ export default class DatatableDirector {
             inputs.push(discount_percent)
         }
         //transactions
-        if(type == 7){
+        if(type == 6){
             inputs.push(branch_to)
         }
         

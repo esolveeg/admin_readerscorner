@@ -12,7 +12,7 @@ import {
     imageFilter,
 } from "@/common/Filters.js"
 
-import {createDoc , viewProduct, editProduct , viewDoc, editDoc , createBranch , editBranch} from "@/common/dataTableActions.js"
+import {createDoc , createProduct , viewProduct, editProduct , viewDoc, editDoc , createBranch , editBranch} from "@/common/dataTableActions.js"
 export default class DatatableDirector {
     constructor(builder){
         this.builder = builder
@@ -37,7 +37,7 @@ export default class DatatableDirector {
                 .setTitle('products')
                 .setUrl('products')
                 .setCreateLoading(false)
-                .setCreate(createDoc)
+                .setCreate(createProduct)
                 .setEdit(editProduct)
                 .setViewable(true)
                 .setView(viewProduct)

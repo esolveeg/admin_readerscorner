@@ -2,18 +2,7 @@
 <template>
   <v-row>
     <v-col class="text-center">
-      <builders-data-table :opts="opts">
-        <template v-slot:actions>
-          <v-btn
-              color="primary"
-              dark
-              class="mb-2"
-              @click.prevent="$router.push({name : 'documents-type-type' , params : {type : 5}})"
-            >
-              View documents
-          </v-btn>
-        </template>
-      </builders-data-table>
+      <builders-data-table :opts="opts" />
     </v-col>
   </v-row>
 </template>
