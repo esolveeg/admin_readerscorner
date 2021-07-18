@@ -28,9 +28,9 @@
             <tr class="text-center">
               <th class="text-center">Item</th>
               <th class="text-center">isbn</th>
-              <th class="text-center">Unit Cost</th>
+              <th  v-if="$route.params.type != '6'" class="text-center">Unit Cost</th>
               <th class="text-center">Quantity</th>
-              <th class="text-center">Price</th>
+              <th  v-if="$route.params.type != '6'" class="text-center">Price</th>
             </tr>
           </thead>
           <tbody>
@@ -40,13 +40,14 @@
             >
               <td>{{item.title}}</td>
               <td>{{item.isbn}}</td>
-              <td>EGP{{item.price}}</td>
+              <td v-if="$route.params.type != '6'" >EGP{{item.price}}</td>
               <td>{{item.qty}}</td>
-              <td>EGP{{ item.price * item.qty }}</td>
+              <td v-if="$route.params.type != '6'" >EGP{{ item.price * item.qty }}</td>
               
             </tr>
              <tr
               class="text-center totals"
+               v-if="$route.params.type != '6'" 
             >
               <td class="no-border" colspan="3"></td>
               <td colspan="2">

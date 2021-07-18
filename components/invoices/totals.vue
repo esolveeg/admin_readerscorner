@@ -16,7 +16,7 @@
                 {{doc.subtotal}}
             </td>
         </tr>
-        <tr >
+        <tr v-if="doc.discount_percent">
             <td class="text-left">
                 discount({{doc.discount_percent}})
             </td>

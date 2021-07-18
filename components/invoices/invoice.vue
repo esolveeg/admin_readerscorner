@@ -15,8 +15,5 @@ import {mapGetters} from "vuex"
         
       }), 
     },
-  created(){
-    this.$store.dispatch('document/findDocWithItems' , this.$route.params.doc)
-  }
 }
 </script>

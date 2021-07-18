@@ -8,3 +8,7 @@
 .w-200 {
   width: 200px;
 }
+
+.hidden {
+  display: none;
+}

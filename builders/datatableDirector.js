@@ -81,24 +81,13 @@ export default class DatatableDirector {
             { text: 'isbn', value: 'isbn' , align: "center"},
             { text: 'title', value: 'title' , align: "center" },
             { text: 'price', value: 'price' , align: "center" },
+            { text: 'quantity', value: 'qty' , align: "center"},
         ]
-        if(ctx.$route.params.type !== 5){
-            headers.push(   
-                { text: 'quantity', value: 'qty' , align: "center"},
-                { text: 'current quantity', value: 'qty_current' , align: "center"},
-                { text: 'new quantity', value: 'qty_new' , align: "center"},
+        if(ctx.$route.name != 'documents-type-doc-view'){
+            headers.push(
+                { text: 'actions', value: 'actions' , align: "center" },
             )
         }
-        if(ctx.$route.params.type == 7){
-            headers.push(   
-                { text: 'to branch current quantity', value: 'qty_branch_to' , align: "center"},
-                { text: 'to branch new quantity', value: 'qty_branch_to_new' , align: "center"},
-                { text: 'new quantity', value: 'qty_new' , align: "center"},
-            )
-        }
-        headers.push(
-            { text: 'actions', value: 'actions' , align: "center" },
-        )
         return this.builder
                 .setTitle('document items')
                 .setTable('document_product')

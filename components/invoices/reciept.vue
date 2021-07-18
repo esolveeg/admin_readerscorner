@@ -26,11 +26,11 @@
         <template v-slot:default>
           <thead>
             <tr class="text-center">
-              <th class="text-center">Item</th>
+              <th class="text-center">{{$route.params.type}}</th>
               <!-- <th class="text-center">isbn</th> -->
-              <th class="text-center">Unit Cost</th>
+              <th v-if="$route.params.type != '6'" class="text-center">Unit Cost</th>
               <th class="text-center">Qty</th>
-              <th class="text-center">Price</th>
+              <th v-if="$route.params.type != '6'" class="text-center">Price</th>
             </tr>
           </thead>
           <tbody>
@@ -40,16 +40,16 @@
             >
               <td>{{item.title}}</td>
               <!-- <td>{{item.isbn}}</td> -->
-              <td>EGP{{item.price}}</td>
+              <td v-if="$route.params.type != '6'">EGP{{item.price}}</td>
               <td>{{item.qty}}</td>
-              <td>EGP{{ item.price * item.qty }}</td>
+              <td v-if="$route.params.type != '6'">EGP{{ item.price * item.qty }}</td>
               
             </tr>
              <tr
               class="text-center totals"
             >
               <!-- <td class="no-border" colspan="3"></td> -->
-              <td colspan="4" >
+              <td colspan="4"  v-if="$route.params.type != '6'">
                 <div class="flex-center">
                   <h2>Subtotal:</h2> <h3>EGP{{doc.subtotal}}</h3>
                 </div>
@@ -59,7 +59,7 @@
               class="text-center totals"
               v-if="doc.discount_percent"
             >
-              <td colspan="4" >
+              <td colspan="4"  v-if="$route.params.type != '6'">
                 <div class="flex-center">
                   <h2>Discount({{doc.discount_percent}}):</h2> <h3>EGP{{doc.discount_value}}</h3>
                 </div>
@@ -69,7 +69,7 @@
               class="text-left totals"
               v-if="doc.discount_percent"
             >
-            <td colspan="4" >
+            <td colspan="4"  v-if="$route.params.type != '6'">
                 <div class="flex-center">
                 <h2>Total:</h2> <h3>EGP{{doc.total}}</h3>
                 </div>
@@ -108,9 +108,6 @@ import {mapGetters} from "vuex"
             ]           
          }
      } ,
-  created(){
-    this.$store.dispatch('document/findDocWithItems' , this.$route.params.doc)
-  }
 }
 </script>
 <style>

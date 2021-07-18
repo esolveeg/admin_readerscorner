@@ -1,8 +1,8 @@
 
 <template>
     <v-row>
-      <div id="invoice" >
-        <invoices-invoice v-show="printing"/>
+      <div id="invoice" class="hidden" >
+        <invoices-invoice/>
       </div>
       <v-col cols="12" v-if="closeErr">
         <div class="danger">
@@ -50,7 +50,7 @@
         </v-btn>
         <modals-global-close-doc/>
       </v-col>
-      
+
       <v-btn @click="print()">print</v-btn>
     </v-row>
 </template>
@@ -61,9 +61,6 @@ import DatatableBuilder from "@/builders/datatable.js"
 import DatatableDirector from "@/builders/datatableDirector.js"
 
 export default {
-  mounted(){
-    console.log(this.$route.name)
-  },
   data(){
       const dataTableOpts = new DatatableDirector(
           new DatatableBuilder()
@@ -74,7 +71,7 @@ export default {
         const configFormOpts = new FormDirector(
                   new FormBuilder())
                   .makeEditAddDoc(this)
-      
+
     return {
       valid:false,
       formOpts,
@@ -90,7 +87,7 @@ export default {
 
       this.$store.dispatch('document/close' , this.$route.params.doc)
       .then(res => {
-        console.log(res)
+        this.print()
         this.$router.push({name : "documents-type", params: {type : this.$route.params.type}})
       })
       .catch(err => {
@@ -100,11 +97,12 @@ export default {
       })
     },
     print(){
+      this.$store.dispatch('document/findDocWithItems' , this.$route.params.doc)
       this.printing = true
-      // Get HTML to print from element
-      
-      const prtHtml = document.getElementById('invoice').innerHTML;
-
+      //Get HTML to print from element
+      let prtHtml = document.getElementById('invoice');
+      // prtHtml.style.display = 'block'
+      prtHtml = prtHtml.innerHTML
       // Get all stylesheets HTML
       let stylesHtml = '';
       for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
@@ -118,6 +116,11 @@ export default {
       <html>
         <head>
           ${stylesHtml}
+          <style>
+            #invoice{
+              display:block !important;
+            }
+          </style>
         </head>
         <body>
           ${prtHtml}
@@ -128,7 +131,7 @@ export default {
       WinPrint.focus();
       WinPrint.print();
       WinPrint.close();
-      this.printing = false
+      // this.printing = false
     },
     findProduct(){
       this.$store.dispatch('global/getProduct' , this.form.product)

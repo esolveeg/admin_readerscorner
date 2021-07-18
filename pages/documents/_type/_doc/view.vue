@@ -1,9 +1,13 @@
 
 <template>
     <v-row>
-      <v-col cols="12">
+      <v-col cols="9">
         <builders-data-table :opts="dataTableOpts"/>
       </v-col>
+      <v-col cols="3">
+          <invoices-totals/>
+      </v-col>
+
       <!-- <v-col class="text-center" :dark="false" cols="12">
         <invoices-main/>
         <invoices-reciept/>
